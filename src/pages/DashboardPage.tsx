@@ -12,7 +12,6 @@ export default function DashboardPage() {
     const [isDark, setIsDark] = useState(false);
     const [loading, setLoading] = useState(true);
     
-    // REHIDRATACIÓN INMEDIATA: Evita la pantalla en blanco al dar F5
     const [permisos, setPermisos] = useState<any[]>(() => {
         const saved = localStorage.getItem("permisos");
         return saved ? JSON.parse(saved) : [];
@@ -27,7 +26,6 @@ export default function DashboardPage() {
     const sidebarRef = useRef<HTMLDivElement>(null);
     const userEmail = localStorage.getItem("userEmail") || "";
 
-    // Sincronizar Pestaña Activa con la URL (Soporte para F5 en sub-rutas)
     useEffect(() => {
         const path = location.pathname;
         if (path === "/dashboard/composiciones/nueva") {
@@ -45,7 +43,6 @@ export default function DashboardPage() {
         }
     }, [location.pathname]);
 
-    // Cerrar menú lateral al hacer clic fuera
     useEffect(() => {
         const handleClickFuera = (event: MouseEvent) => {
             if (menuAbierto && sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
@@ -56,7 +53,6 @@ export default function DashboardPage() {
         return () => document.removeEventListener("mousedown", handleClickFuera);
     }, [menuAbierto]);
 
-    // Inicialización y Carga de Permisos
     useEffect(() => {
         const inicializarDashboard = async () => {
             const token = localStorage.getItem("token");
@@ -87,7 +83,6 @@ export default function DashboardPage() {
             } catch (error) {
                 console.error("Error cargando dashboard:", error);
             } finally {
-                // Pequeño delay para suavizar la entrada
                 setTimeout(() => setLoading(false), 500);
             }
         };
@@ -147,7 +142,6 @@ export default function DashboardPage() {
         popover: isDark ? "bg-slate-900 border-slate-700 shadow-black" : "bg-white border-white shadow-slate-200",
     };
 
-    // PANTALLA DE CARGA (Evita el blanco)
     if (loading && permisos.length === 0) {
         return (
             <div className={`h-screen w-full flex flex-col items-center justify-center ${isDark ? "bg-slate-950" : "bg-[#E6ECF7]"}`}>
@@ -168,7 +162,7 @@ export default function DashboardPage() {
                     {permisos.filter((p) => !p.IdModuloPadre && p.Visualizar).map((padre) => (
                         <div key={padre.IdModulo} className="relative group">
                             <button
-                                onClick={() => setMenuAbierto(menuAbierto === padre.ModuloNombre ? null : padre.ModuloNombre)}
+                                onClick={() => setMenuAbierto(prev => prev === padre.ModuloNombre ? null : padre.ModuloNombre)}
                                 className={`w-12 h-12 rounded-2xl flex items-center justify-center text-2xl transition-all ${menuAbierto === padre.ModuloNombre ? "bg-sky-500 text-white shadow-lg scale-110" : "hover:bg-sky-500/10 text-slate-400"}`}
                             >
                                 {getIcon(padre.ModuloNombre)}
@@ -218,14 +212,42 @@ export default function DashboardPage() {
                     </div>
                 </header>
 
-                <main className="flex-1 px-8 pb-8 overflow-hidden">
-                    <div className={`w-full h-full rounded-[3rem] p-12 relative overflow-y-auto ${theme.contentCard}`}>
+                <main className="flex-1 px-8 pb-8 overflow-hidden relative">
+                    <div className={`w-full h-full rounded-[3rem] p-12 relative overflow-y-auto overflow-x-hidden ${theme.contentCard}`}>
                         {pestañaActiva === "inicio" && (
-                            <div className="h-full flex items-center justify-center">
-                                <div className="text-center space-y-6">
-                                    <div className="inline-block px-4 py-2 rounded-2xl bg-sky-500/10 text-sky-600 text-[10px] font-black uppercase tracking-[0.3em]">SisCoIn Warehouse</div>
-                                    <h2 className="text-8xl font-black italic tracking-tighter leading-tight uppercase">Hola, <br /> <span className="text-sky-600">Bienvenido</span></h2>
-                                    <p className={`text-xl font-medium opacity-40 max-w-lg mx-auto`}>Gestión técnica de inventarios y activos.</p>
+                            <div className="min-h-full w-full flex flex-col items-center justify-center relative py-12">
+                                {/* CAPA DE FONDO */}
+                                <div className="absolute inset-0 flex items-center justify-center z-0 pointer-events-none overflow-hidden">
+                                    <div className={`absolute w-125 h-125 rounded-full blur-[120px] opacity-20 ${isDark ? "bg-sky-500" : "bg-blue-400"}`}></div>
+                                    <div className="absolute w-100 h-100 border border-sky-500/10 rounded-full animate-[spin_40s_linear_infinite]"></div>
+                                    <div className="relative grid grid-cols-2 gap-10 opacity-[0.05] -rotate-12 scale-150">
+                                        {[1, 2, 3, 4].map((i) => (
+                                            <div key={i} className={`w-32 h-32 rounded-[2.5rem] border-2 ${isDark ? "border-white" : "border-sky-500"}`}></div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* CAPA DE CONTENIDO */}
+                                <div className="relative z-10 flex flex-col items-center justify-center w-full max-w-4xl">
+                                    <div className="mb-16 px-6 py-2 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-600 text-[10px] font-black uppercase tracking-[0.4em] shadow-sm">
+                                        SisCoIn Warehouse Management
+                                    </div>
+
+                                    <div className="relative h-48 flex flex-col items-center justify-center mb-10">
+                                        <div className="w-40 h-40 rounded-[3.5rem] bg-linear-to-br from-sky-500 to-indigo-600 shadow-[0_30px_60px_-10px_rgba(14,165,233,0.4)] flex items-center justify-center animate-bounce duration-3000">
+                                            <span className="text-7xl">📦</span>
+                                        </div>
+                                        <div className="absolute -bottom-2 w-20 h-2 bg-black/10 blur-xl rounded-full scale-x-150 animate-pulse"></div>
+                                    </div>
+
+                                    <div className="text-center space-y-4">
+                                        <h2 className={`text-7xl md:text-8xl font-black italic tracking-tighter leading-none uppercase ${isDark ? "text-white" : "text-slate-900"}`}>
+                                            Hola, <br /> <span className="text-sky-600">Bienvenido</span>
+                                        </h2>
+                                        <p className="text-lg font-medium max-w-lg mx-auto opacity-40 leading-relaxed">
+                                            Plataforma técnica para la gestión inteligente <br /> de inventarios y activos.
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         )}
