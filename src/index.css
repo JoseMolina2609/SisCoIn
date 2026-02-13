@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@theme {
+  /* Fuentes */
+  --font-segoe: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
+  /* Animaciones Custom */
+  --animate-bounce-slow: bounce-slow 4s infinite ease-in-out;
+
+  @keyframes bounce-slow {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-12px);
+    }
+  }
+}
+
+/* Estilos Globales */
+@layer base {
+  html, body, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-segoe);
+    @apply antialiased; /* Mejora la legibilidad de la fuente */
+  }
+
+  input, button, textarea, select {
+    font-family: inherit;
+  }
+}
+
+/* Utilidades personalizadas (como la que usas en tus pestañas) */
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
