@@ -7,7 +7,7 @@ export default function PaginaSincronizar() {
 	const [esOscuro, setEsOscuro] = useState(false);
 	const navigate = useNavigate();
 
-	const correo = localStorage.getItem("userEmail");
+	const correo = sessionStorage.getItem("userEmail");
 
 	useEffect(() => {
 		// Sensor de tiempo para el tema
@@ -39,7 +39,7 @@ export default function PaginaSincronizar() {
 				resultado.ResultCode === 0 ||
 				resultado.ResultDesc === "USUARIO YA REGISTRADO"
 			) {
-				localStorage.setItem("userName", nombre);
+				sessionStorage.setItem("userName", nombre);
 				navigate("/dashboard", { replace: true });
 			} else {
 				alert("Aviso: " + resultado.ResultDesc);
@@ -107,7 +107,7 @@ export default function PaginaSincronizar() {
 
 					<button
 						disabled={cargando}
-						className="w-full bg-sky-600 text-white py-4 rounded-[1.5rem] font-bold uppercase tracking-widest hover:bg-sky-500 hover:scale-[1.02] active:scale-95 shadow-xl shadow-sky-500/20 transition-all disabled:opacity-50"
+						className="w-full bg-sky-600 text-white py-4 rounded-3xl font-bold uppercase tracking-widest hover:bg-sky-500 hover:scale-[1.02] active:scale-95 shadow-xl shadow-sky-500/20 transition-all disabled:opacity-50"
 					>
 						{cargando ? "Sincronizando..." : "Finalizar Registro"}
 					</button>

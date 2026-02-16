@@ -78,7 +78,7 @@ const ComposicionesPage = ({ isDark }: { isDark: boolean }) => {
                         className={`text-4xl font-black italic tracking-tighter ${isDark ? "text-white" : "text-slate-900"}`}
                     >
                         CATALOGO{" "}
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-500 inline-block pr-3">
+                        <span className="text-transparent bg-clip-text bg-linear-to-r from-sky-400 to-indigo-500 inline-block pr-3">
                             DE COMPOSICIONES
                         </span>
                     </h2>
@@ -99,7 +99,7 @@ const ComposicionesPage = ({ isDark }: { isDark: boolean }) => {
             </div>
 
             {/* BLOQUE DE FILTROS AZUL */}
-            <div className="grid grid-cols-12 px-8 py-5 rounded-[2rem] shadow-xl shadow-sky-500/10 border border-sky-400/20 bg-gradient-to-r from-sky-600 to-indigo-700 items-center">
+            <div className="grid grid-cols-12 px-8 py-5 rounded-4xl shadow-xl shadow-sky-500/10 border border-sky-400/20 bg-linear-to-r from-sky-600 to-indigo-700 items-center">
                 <div className="col-span-11 grid grid-cols-4 gap-8">
                     {/* COMBO COLOR */}
                     <div className="border-r border-white/10 pr-4">

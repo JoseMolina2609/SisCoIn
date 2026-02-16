@@ -20,7 +20,7 @@ export default function LoginPage() {
 	});
 
 	useEffect(() => {
-		const token = localStorage.getItem("token");
+		const token = sessionStorage.getItem("token");
 
 		if (token) navigate("/dashboard", { replace: true });
 
@@ -70,9 +70,9 @@ export default function LoginPage() {
 			const result = await response.json();
 
 			if (result.ResultCode === 0) {
-				localStorage.setItem("token", result.data.accesstoken);
+				sessionStorage.setItem("token", result.data.accesstoken);
 
-				localStorage.setItem("userEmail", username);
+				sessionStorage.setItem("userEmail", username);
 
 				navigate("/dashboard", { replace: true });
 			} else {

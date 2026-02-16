@@ -4,8 +4,7 @@ import PaginaSincronizar from "./pages/PaginaSincronizar";
 import Dashboard from "./pages/DashboardPage";
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-    const token = localStorage.getItem("token");
-    // Si no hay token en el almacenamiento local, no hay paso.
+    const token = sessionStorage.getItem("token");
     if (!token) {
         return <Navigate to="/login" replace />;
     }
@@ -16,19 +15,64 @@ function App() {
     return (
         <BrowserRouter>
             <Routes>
-                {/* 1. Al entrar a http://localhost:5173/ te manda a /login automáticamente */}
                 <Route path="/" element={<Navigate to="/login" replace />} />
-                
                 <Route path="/login" element={<LoginPage />} />
 
-                {/* 2. Rutas protegidas: Solo entran si hay token */}
-                <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-                <Route path="/dashboard/composiciones" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-                <Route path="/dashboard/composiciones/nueva" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                {/* Rutas del Dashboard */}
+                <Route
+                    path="/dashboard"
+                    element={
+                        <ProtectedRoute>
+                            <Dashboard />
+                        </ProtectedRoute>
+                    }
+                />
+                
+                {/* DEBES AGREGAR ESTAS RUTAS PARA QUE EL DASHBOARD LAS DETECTE */}
+                <Route
+                    path="/dashboard/sucursales"
+                    element={
+                        <ProtectedRoute>
+                            <Dashboard />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/dashboard/proveedores"
+                    element={
+                        <ProtectedRoute>
+                            <Dashboard />
+                        </ProtectedRoute>
+                    }
+                />
+                
+                {/* Rutas de Composiciones */}
+                <Route
+                    path="/dashboard/composiciones"
+                    element={
+                        <ProtectedRoute>
+                            <Dashboard />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/dashboard/composiciones/nueva"
+                    element={
+                        <ProtectedRoute>
+                            <Dashboard />
+                        </ProtectedRoute>
+                    }
+                />
 
-                <Route path="/sincronizar" element={<ProtectedRoute><PaginaSincronizar /></ProtectedRoute>} />
+                <Route
+                    path="/sincronizar"
+                    element={
+                        <ProtectedRoute>
+                            <PaginaSincronizar />
+                        </ProtectedRoute>
+                    }
+                />
 
-                {/* 3. Si escriben cualquier cosa loca en la URL, al login */}
                 <Route path="*" element={<Navigate to="/login" replace />} />
             </Routes>
         </BrowserRouter>

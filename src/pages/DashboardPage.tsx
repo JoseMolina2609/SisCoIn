@@ -13,7 +13,7 @@ export default function DashboardPage() {
     const [loading, setLoading] = useState(true);
     
     const [permisos, setPermisos] = useState<any[]>(() => {
-        const saved = localStorage.getItem("permisos");
+        const saved = sessionStorage.getItem("permisos");
         return saved ? JSON.parse(saved) : [];
     });
 
@@ -24,7 +24,7 @@ export default function DashboardPage() {
     const [menuAbierto, setMenuAbierto] = useState<string | null>(null);
 
     const sidebarRef = useRef<HTMLDivElement>(null);
-    const userEmail = localStorage.getItem("userEmail") || "";
+    const userEmail = sessionStorage.getItem("userEmail") || "";
 
     useEffect(() => {
         const path = location.pathname;
@@ -55,7 +55,7 @@ export default function DashboardPage() {
 
     useEffect(() => {
         const inicializarDashboard = async () => {
-            const token = localStorage.getItem("token");
+            const token = sessionStorage.getItem("token");
             if (!token || !userEmail) {
                 navigate("/login", { replace: true });
                 return;
@@ -78,7 +78,7 @@ export default function DashboardPage() {
                     const data = await response.json();
                     const listaPermisos = data.data || data || [];
                     setPermisos(listaPermisos);
-                    localStorage.setItem("permisos", JSON.stringify(listaPermisos));
+                    sessionStorage.setItem("permisos", JSON.stringify(listaPermisos));
                 }
             } catch (error) {
                 console.error("Error cargando dashboard:", error);
@@ -99,7 +99,7 @@ export default function DashboardPage() {
     };
 
     const handleLogout = () => {
-        localStorage.clear();
+        sessionStorage.clear();
         navigate("/login", { replace: true });
     };
 
