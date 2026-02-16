@@ -28,7 +28,7 @@ function App() {
                     }
                 />
                 
-                {/* DEBES AGREGAR ESTAS RUTAS PARA QUE EL DASHBOARD LAS DETECTE */}
+                {/* Rutas para dashboard */}
                 <Route
                     path="/dashboard/sucursales"
                     element={
